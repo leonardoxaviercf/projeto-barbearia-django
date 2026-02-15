@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,12 +10,12 @@
 <body>
 
     <header>
-        <nav style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
-            <div class="logo"><h2 style="color: #d4af37; margin: 0;">LX</h2></div>
-            <div>
-                <a href="{% url 'home' %}" style="color: white; margin-left: 20px; text-decoration: none;">Início</a>
-                <a href="{% url 'lista_servicos' %}" style="color: white; margin-left: 20px; text-decoration: none;">Serviços</a>
-                <a href="/admin" style="color: #d4af37; margin-left: 20px; text-decoration: none;">Admin</a>
+        <nav class="navbar">
+            <div class="logo"><h2>LX</h2></div>
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Início</a>
+                <a href="{% url 'lista_servicos' %}">Serviços</a>
+                <a href="/admin">Admin</a>
             </div>
         </nav>
     </header>
@@ -31,9 +31,9 @@
             </div>
         </section>
 
-        <section style="text-align: center; padding: 40px 0;">
-            <h3 style="color: #d4af37;">Por que nos escolher?</h3>
-            <div style="display: flex; justify-content: space-around; margin-top: 30px;">
+        <section class="info-section">
+            <h3 class="golden-text">Por que nos escolher?</h3>
+            <div class="info-container">
                 <div>
                     <h4>Profissionais</h4>
                     <p>Barbeiros experientes.</p>
@@ -50,7 +50,7 @@
         </section>
     </main>
 
-    <footer style="text-align: center; margin-top: 50px; color: #666; border-top: 1px solid #333; padding-top: 20px;">
+    <footer class="main-footer">
         <p>&copy; 2026 Barbearia Xavier - Desenvolvido por Leonardo Xavier</p>
     </footer>
 
