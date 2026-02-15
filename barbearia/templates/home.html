@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia Xavier - Início</title>
+    <link rel="stylesheet" href="{% static 'barbearia/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <nav style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+            <div class="logo"><h2 style="color: #d4af37; margin: 0;">LX</h2></div>
+            <div>
+                <a href="{% url 'home' %}" style="color: white; margin-left: 20px; text-decoration: none;">Início</a>
+                <a href="{% url 'lista_servicos' %}" style="color: white; margin-left: 20px; text-decoration: none;">Serviços</a>
+                <a href="/admin" style="color: #d4af37; margin-left: 20px; text-decoration: none;">Admin</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Estilo e Tradição</h2>
+            <p>Onde a arte da barbearia encontra o cavalheiro moderno. Agende seu horário e transforme seu visual.</p>
+            
+            <div class="cta-buttons">
+                <a href="{% url 'lista_servicos' %}" class="btn-home btn-primary-custom">Ver Serviços</a>
+                <a href="#" class="btn-home btn-secondary-custom">Agendar Agora</a>
+            </div>
+        </section>
+
+        <section style="text-align: center; padding: 40px 0;">
+            <h3 style="color: #d4af37;">Por que nos escolher?</h3>
+            <div style="display: flex; justify-content: space-around; margin-top: 30px;">
+                <div>
+                    <h4>Profissionais</h4>
+                    <p>Barbeiros experientes.</p>
+                </div>
+                <div>
+                    <h4>Ambiente</h4>
+                    <p>Espaço climatizado e café.</p>
+                </div>
+                <div>
+                    <h4>Localização</h4>
+                    <p>Fácil acesso no centro.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align: center; margin-top: 50px; color: #666; border-top: 1px solid #333; padding-top: 20px;">
+        <p>&copy; 2026 Barbearia Xavier - Desenvolvido por Leonardo Xavier</p>
+    </footer>
+
+</body>
+</html>
