@@ -21,6 +21,12 @@
     </header>
 
     <main>
+        {% if user.is_authenticated %}
+            <div class="user-welcome">
+                <p>Olá, <strong>{{ user.username }}</strong>! Você está logado.</p>
+                <a href="{% url 'logout' %}" class="logout-link">Sair</a>
+            </div>
+        {% endif %}
         <section class="hero">
             <h2>Estilo e Tradição</h2>
             <p>Onde a arte da barbearia encontra o cavalheiro moderno. Agende seu horário e transforme seu visual.</p>

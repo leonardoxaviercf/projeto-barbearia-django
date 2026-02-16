@@ -179,3 +179,90 @@ h1 {
     border-top: 1px solid #333;
     padding: 20px 0;
 }
+
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    background-color: #2c2c2c;
+    padding: 40px;
+    border-radius: 10px;
+    border: 1px solid #d4af37;
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #d4af37;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.user-welcome {
+    background-color: #2c2c2c;
+    border-left: 4px solid #d4af37;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.user-welcome p {
+    margin: 0;
+    color: #f4f4f4;
+}
+
+.logout-link {
+    color: #ff4d4d; /* Tom avermelhado para o Logout */
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}
+
+.booking-form {
+    background: #2c2c2c;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.formset-row {
+    display: flex;
+    gap: 15px;
+    border-bottom: 1px solid #444;
+    padding: 10px 0;
+    align-items: center;
+}
+
+.formset-row p {
+    margin: 0;
+}
+
+.booking-main p label {
+    display: block;
+    color: #d4af37;
+    margin-bottom: 5px;
+}
