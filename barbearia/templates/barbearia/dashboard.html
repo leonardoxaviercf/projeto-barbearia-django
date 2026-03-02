@@ -1,0 +1,56 @@
+{% extends 'barbearia/base.html' %}
+{% load user_filters %}
+{% load static %}
+
+{% block title %}Meu Dashboard - Barbearia Xavier{% endblock %}
+
+{% block content %}
+<div class="container-lg"> 
+    <h2 class="golden-text">Olá, {{ user.first_name|first_name }}!</h2>
+    <p class="text-center">Abaixo estão seus agendamentos realizados na Barbearia Xavier.</p>
+
+    <div class="cards-grid">
+        {% for agendamento in agendamentos %}
+        <div class="card-agendamento">
+            <div class="card-header-line flex-between">
+                <span class="golden-text"><strong>{{ agendamento.data|date:"d/m/Y - H:i" }}</strong></span>
+                <span class="badge-status {% if agendamento.data > now %}status-confirmado{% else %}status-finalizado{% endif %}">
+                    {% if agendamento.data > now %}Confirmado{% else %}Finalizado{% endif %}
+                </span>
+            </div>
+            
+            <p><strong>Barbeiro:</strong> {{ agendamento.barbeiro.nome }}</p>
+            
+            <div class="text-muted-sm">
+                <strong>Serviços:</strong><br>
+                {% for item in agendamento.itens.all %}
+                    • {{ item.servico.nome }} (R$ {{ item.preco_pago }})<br>
+                {% empty %}
+                    Nenhum serviço registrado.
+                {% endfor %}
+            </div>
+
+            <div class="flex-between mt-20">
+                <span class="badge-gold">
+                    Total: R$ {{ agendamento.total|default:"0.00" }}
+                </span>
+                
+                {% if agendamento.data > now %}
+                    <a href="{% url 'cancelar_agendamento' agendamento.id %}" 
+                       class="btn-cancelar" 
+                       onclick="return confirm('Tem certeza que deseja cancelar este agendamento?')">
+                        Cancelar
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center w-100">Você ainda não possui agendamentos.</p>
+        {% endfor %}
+    </div>
+    
+    <a href="{% url 'criar_agendamento' %}" class="btn-custom btn-primary w-100 text-center mt-30">
+        Novo Agendamento
+    </a>
+</div>
+{% endblock %}

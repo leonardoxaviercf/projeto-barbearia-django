@@ -1,0 +1,187 @@
+{% extends 'barbearia/base.html' %}
+{% load static %}
+
+{% block title %}Novo Agendamento - Barbearia Xavier{% endblock %}
+
+{% block content %}
+<div class="container-md">
+    <h2 class="golden-text">Agendar Horário</h2>
+
+    {% if form.errors or formset.errors or form.non_field_errors %}
+        <div class="error-container">
+            <h3 class="text-center">Atenção:</h3>
+            <ul class="flex-column" style="list-style: none; padding: 0;">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+
+                {% for f in formset %}
+                    {% for field in f %}
+                        {% for error in field.errors %}
+                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    <form method="post" class="booking-form" novalidate>
+        {% csrf_token %}
+        
+        <section class="card-custom">
+            <div class="form-group">
+                <label for="{{ form.barbeiro.id_for_label }}">Barbeiro:</label>
+                {{ form.barbeiro }}
+            </div>
+
+            <div class="form-row-grid">
+                <div class="form-group">
+                    <label for="{{ form.dia.id_for_label }}">Data:</label>
+                    {{ form.dia }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.hora.id_for_label }}">Horário:</label>
+                    {{ form.hora }}
+                </div>
+            </div>
+        </section>
+
+        <h3 class="golden-text mt-30">Escolha os Serviços (Carrinho)</h3>
+        {{ formset.management_form }}
+
+        <div id="formset-container">
+            {% for f in formset %}
+                <div class="formset-row card-agendamento">
+                    {{ f.id }} 
+                    
+                    <div class="form-group flex-grow-2">
+                        <label class="golden-text label-sm">Serviço:</label>
+                        {{ f.servico }}
+                    </div>
+
+                    <div class="form-group flex-grow-1">
+                        <label class="golden-text label-sm">Preço:</label>
+                        <div class="preco-wrapper">
+                            <span class="preco-prefix">R$</span>
+                            {{ f.preco_pago }}
+                        </div>
+                    </div>
+
+                    <div class="btn-excluir-container">
+                        <button type="button" class="btn-cancelar" onclick="removeService(this)">Excluir</button>
+                    </div>
+                    
+                    <div style="display:none;">{{ f.DELETE }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" id="add-item" class="btn-custom btn-secondary w-100">
+            + Adicionar outro serviço
+        </button>
+        
+        <button type="submit" class="btn-custom btn-primary w-100 mt-30">
+            Finalizar Agendamento
+        </button>
+    </form>
+</div>
+
+<script>
+    let precosServicos = {{ servicos_json|safe }};
+
+    function vincularEventosPreco() {
+        document.querySelectorAll('select[name$="-servico"]').forEach(select => {
+            select.onchange = function() {
+                const row = this.closest('.formset-row');
+                const campoPreco = row.querySelector('input[name$="-preco_pago"]');
+                const servicoId = this.value;
+                if (servicoId in precosServicos) {
+                    campoPreco.value = precosServicos[servicoId].toFixed(2);
+                } else {
+                    campoPreco.value = ""; 
+                }
+            };
+        });
+    }
+
+    function reorganizarIndices() {
+        const allRows = document.querySelectorAll('.formset-row');
+        const totalForms = document.querySelector('input[name$="-TOTAL_FORMS"]');
+        allRows.forEach((row, index) => {
+            row.querySelectorAll('input, select, label').forEach(el => {
+                ['name', 'id', 'for'].forEach(attr => {
+                    if (el.hasAttribute(attr)) {
+                        const newVal = el.getAttribute(attr).replace(/-\d+-/g, `-${index}-`);
+                        el.setAttribute(attr, newVal);
+                    }
+                });
+            });
+        });
+        if(totalForms) totalForms.value = allRows.length;
+    }
+
+    function removeService(btn) {
+        const row = btn.closest('.formset-row');
+        const totalForms = document.querySelector('input[name$="-TOTAL_FORMS"]');
+        const deleteInput = row.querySelector('input[name$="-DELETE"]');
+
+        if (deleteInput) {
+            deleteInput.checked = true;
+            row.style.display = 'none';
+            row.querySelectorAll('input, select').forEach(el => {
+                if (el.name.includes('servico') || el.name.includes('preco_pago')) el.value = '';
+            });
+        } else {
+            row.remove();
+            reorganizarIndices();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const addButton = document.querySelector('#add-item');
+        const container = document.querySelector('#formset-container');
+        const totalForms = document.querySelector('input[name$="-TOTAL_FORMS"]');
+        
+        const campoDia = document.querySelector('input[name="dia"]');
+        if (campoDia) {
+            const hoje = new Date().toISOString().split('T')[0];
+            campoDia.setAttribute('min', hoje);
+        }
+
+        const firstRow = container.querySelector('.formset-row');
+        const blueprint = firstRow.cloneNode(true);
+        blueprint.querySelectorAll('input, select').forEach(i => i.value = '');
+
+        addButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const newIndex = parseInt(totalForms.value);
+            const newRow = blueprint.cloneNode(true);
+            newRow.classList.add('flex-between'); 
+            
+            newRow.querySelectorAll('input, select, label').forEach(el => {
+                ['name', 'id', 'for'].forEach(attr => {
+                    if (el.hasAttribute(attr)) {
+                        const newVal = el.getAttribute(attr).replace(/-\d+-/g, `-${newIndex}-`);
+                        el.setAttribute(attr, newVal);
+                    }
+                });
+                if (el.tagName === 'INPUT' || el.tagName === 'SELECT') el.value = '';
+            });
+
+            container.appendChild(newRow);
+            totalForms.value = newIndex + 1;
+            vincularEventosPreco();
+        });
+
+        vincularEventosPreco();
+    });
+</script>
+{% endblock %}

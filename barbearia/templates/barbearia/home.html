@@ -1,0 +1,57 @@
+{% extends 'barbearia/base.html' %}
+{% load static %}
+
+{% block title %}Barbearia Xavier - Início{% endblock %}
+
+{% block content %}
+<div class="hero-wrapper">
+    {% if notificacao %}
+        <div class="alert-gold notificacao-overlay">
+            <span class="icon-lg">📅</span>
+            <div>
+                <h4 class="golden-text m-0">Lembrete de Agendamento</h4>
+                <p class="m-0 text-sm">
+                    Olá, <strong>{{ user.first_name|default:user.username }}</strong>! Você tem um horário com <strong>{{ notificacao.barbeiro.nome }}</strong> 
+                    {% if notificacao.data.date == hoje %}
+                        <strong>hoje</strong>
+                    {% elif notificacao.data.date == amanha %}
+                        <strong>amanhã</strong>
+                    {% else %}
+                        no dia <strong>{{ notificacao.data|date:"d/m" }}</strong>
+                    {% endif %}
+                    às <strong>{{ notificacao.data|date:"H:i" }}</strong>.
+                </p>
+            </div>
+            <a href="{% url 'dashboard_cliente' %}" class="golden-text ml-auto font-bold text-sm">Ver detalhes →</a>
+        </div>
+    {% endif %}
+
+    <section class="hero" style="background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('{% static 'barbearia/images/barber.jpeg' %}');">
+        <h2>Excelência em cada detalhe</h2>
+        <p>Transformamos sua autoestima através de técnicas clássicas e atendimento personalizado no coração de Ceará-Mirim.</p>
+        
+        <div class="cta-buttons">
+            <a href="{% url 'lista_servicos' %}" class="btn-custom btn-primary">Ver Catálogo e Preços</a>
+            <a href="https://wa.me/seunumeroaqui" target="_blank" class="btn-custom btn-secondary">Dúvidas no WhatsApp</a>
+        </div>
+    </section>
+</div>
+
+<section class="info-section">
+    <h3 class="golden-text">Por que nos escolher?</h3>
+    <div class="info-container">
+        <div class="card-agendamento min-w-250">
+            <h4 class="golden-text">Mestres Barbeiros</h4>
+            <p>Especialistas em cortes modernos e barboterapia tradicional.</p>
+        </div>
+        <div class="card-agendamento min-w-250">
+            <h4 class="golden-text">Experiência VIP</h4>
+            <p>Lounge climatizado com café cortesia e música ambiente selecionada.</p>
+        </div>
+        <div class="card-agendamento min-w-250">
+            <h4 class="golden-text">Conveniência Central</h4>
+            <p>Localização estratégica com facilidade de estacionamento.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

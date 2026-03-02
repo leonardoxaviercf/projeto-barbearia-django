@@ -1,268 +1,375 @@
-/* Regras para os serviços */
-body {
+/* 1. RESET E BASE */
+* { box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
     background-color: #1a1a1a;
     color: #f4f4f4;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
-h1 {
-    text-align: center;
-    color: #d4af37;
-}
+body { display: flex; flex-direction: column; }
 
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
+h1, .golden-text { color: #d4af37; text-align: center; }
 
-.card {
+/* 2. COMPONENTES REUTILIZÁVEIS (PADRÃO BARBEARIA) */
+.container, .login-form, .card-custom {
     background-color: #2c2c2c;
-    border: 1px solid #444;
+    border: 1px solid #d4af37;
     border-radius: 8px;
     padding: 20px;
-    width: 250px;
-    text-align: center;
-    transition: transform 0.3s;
+    margin: 40px auto;
+    max-width: 600px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    border-color: #d4af37;
-}
+.login-form { max-width: 400px; padding: 40px; }
 
-.card h3 {
-    margin-top: 0;
-}
-
-.price {
-    color: #d4af37;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.btn-agendar {
-    background-color: #d4af37;
-    color: #000;
-    border: none;
-    padding: 10px 15px;
+/* Botões Customizados */
+.btn-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
     border-radius: 5px;
-    cursor: pointer;
+    font-weight: bold;
     text-decoration: none;
-    display: inline-block;
-    margin-top: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    border: 2px solid #d4af37;
 }
 
+.btn-primary { background-color: #d4af37; color: #000; }
+.btn-primary:hover { background-color: #b8962e; border-color: #b8962e; transform: translateY(-2px); }
+
+.btn-secondary { background-color: transparent; color: #d4af37; }
+.btn-secondary:hover { background-color: #d4af37; color: #000; }
+
+/* 3. NAVEGAÇÃO (UNIFICADA) */
 .navbar {
+    background-color: #121212 !important; /* Força o fundo escuro */
+    border-bottom: 2px solid #d4af37;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-.logo h2 {
-    color: #d4af37;
-    margin: 0;
+.nav-logo {
+    color: #d4af37 !important;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }
 
 .nav-links a {
-    color: white;
-    margin-left: 20px;
+    color: #ffffff;
     text-decoration: none;
-    transition: color 0.3s;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
     color: #d4af37;
 }
 
-.nav-links .nav-admin {
-    color: #d4af37;
-    font-weight: bold;
+/* ESTILIZAÇÃO DE MENSAGENS (DJANGO MESSAGES) */
+.alert-success {
+    border-color: #00ff00;
+    background: rgba(0, 255, 0, 0.05);
 }
 
+#messages-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0;
+    padding: 0;
+    pointer-events: none;
+}
+
+.message-item {
+    pointer-events: auto;
+    width: 90%;
+    max-width: 1100px;
+    margin: 15px 0 0 0;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 200px;
+    opacity: 1;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.btn-logout-clean {
+    background: none;
+    border: 1px solid #ff4d4d;
+    color: #ff4d4d;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.btn-logout-clean:hover {
+    background: #ff4d4d;
+    color: #fff;
+}
+
+.btn-cancelar {
+    color: #ff4d4d !important; /* Vermelho padrão de erro/alerta */
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: 0.3s;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btn-cancelar:hover {
+    background-color: rgba(255, 77, 77, 0.1);
+    border-color: #ff4d4d;
+    text-decoration: none;
+}
+
+/* 4. HOME / HERO SECTION */
 .hero {
-    height: 60vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('images/barber.jpeg');
     background-size: cover;
     background-position: center;
-    border-radius: 15px;
-    margin-bottom: 40px;
+    background-attachment: fixed;
 }
 
-.hero h2 {
-    font-size: 3rem;
-    color: #d4af37;
-    margin-bottom: 10px;
-}
+.hero h2 { font-size: 3.5rem; text-transform: uppercase; margin-bottom: 10px; }
+.hero p { font-size: 1.2rem; max-width: 800px; margin-bottom: 30px; }
 
-.hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
-    margin-bottom: 25px;
-}
-
-.cta-buttons {
+.info-container {
     display: flex;
+    justify-content: space-around;
+    padding: 40px 5%;
     gap: 20px;
 }
 
-.btn-home {
-    display: inline-block;
-    padding: 12px 24px; 
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: 0.3s;
-    text-align: center;
-    min-width: 160px;
-}
-
-.btn-primary-custom {
-    background-color: #d4af37;
-    color: #000;
-    border: 2px solid #d4af37;
-}
-
-.btn-primary-custom:hover {
-    background-color: #b8962e;
-    border-color: #b8962e;
-}
-
-.btn-secondary-custom {
-    background-color: transparent;
-    color: #d4af37;
-    border: 2px solid #d4af37;
-}
-
-.btn-secondary-custom:hover {
-    background-color: #d4af37;
-    color: #000;
-}
-
-.info-section {
-    text-align: center;
-    padding: 40px 0;
-}
-
-.info-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-}
-
-.golden-text {
-    color: #d4af37;
-}
-
-.info-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-}
-
-.main-footer {
-    text-align: center;
-    margin-top: 50px;
-    color: #666;
-    border-top: 1px solid #333;
-    padding: 20px 0;
-}
-
-.login-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.login-form {
-    background-color: #2c2c2c;
-    padding: 40px;
-    border-radius: 10px;
-    border: 1px solid #d4af37;
+/* NOTIFICAÇÃO FLUTUANTE SOBRE A HERO */
+.hero-wrapper {
+    position: relative;
     width: 100%;
-    max-width: 400px;
 }
 
-.form-group {
-    margin-bottom: 20px;
+.notificacao-overlay {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 90%;
+    max-width: 1100px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #d4af37;
-}
-
-.form-group input {
-    width: 100%;
+/* 5. FORMULÁRIOS E ERROS */
+.form-group { margin-bottom: 20px; display: flex; flex-direction: column; }
+.form-group label { color: #d4af37; margin-bottom: 8px; font-weight: bold; }
+.form-group input, .form-group select {
     padding: 10px;
     background: #1a1a1a;
     border: 1px solid #444;
     color: white;
     border-radius: 5px;
-    box-sizing: border-box;
 }
 
-.user-welcome {
-    background-color: #2c2c2c;
-    border-left: 4px solid #d4af37;
-    padding: 10px 20px;
+.error-container {
+    background-color: #ff4d4d;
+    border-left: 5px solid #b30000;
+    padding: 15px;
+    border-radius: 5px;
     margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 4px;
 }
 
-.user-welcome p {
-    margin: 0;
-    color: #f4f4f4;
+/* 6. CARDS DE AGENDAMENTO (DASHBOARD) */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
-.logout-link {
-    color: #ff4d4d; /* Tom avermelhado para o Logout */
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: bold;
-}
-
-.logout-link:hover {
-    text-decoration: underline;
-}
-
-.booking-form {
+.card-agendamento {
     background: #2c2c2c;
-    padding: 30px;
+    border: 1px solid #444;
     border-radius: 8px;
+    padding: 20px;
+    transition: 0.3s;
 }
 
+.card-agendamento:hover {
+    transform: translateY(-5px);
+    border-color: #d4af37;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+}
+
+/* AJUSTE PARA O CARRINHO DE SERVIÇOS */
 .formset-row {
     display: flex;
-    gap: 15px;
-    border-bottom: 1px solid #444;
-    padding: 10px 0;
     align-items: center;
+    gap: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
 }
 
-.formset-row p {
-    margin: 0;
+.flex-grow-2 { flex: 2; }
+.flex-grow-1 { flex: 1; }
+
+.btn-excluir-container {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    padding-bottom: 5px;
 }
 
-.booking-main p label {
-    display: block;
-    color: #d4af37;
-    margin-bottom: 5px;
+/* UTILITÁRIOS DE LAYOUT */
+.container-lg { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.container-md { max-width: 800px; margin: 0 auto; padding: 20px; }
+.container-sm { max-width: 500px; margin: 0 auto; padding: 20px; }
+
+/* GRID DE FORMULÁRIO (DATA/HORA) */
+.form-row-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* COMPONENTES DE NOTIFICAÇÃO E BADGES */
+.alert-gold {
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px solid #d4af37;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.badge-status {
+    font-size: 0.7em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid;
+}
+
+.status-confirmado { color: #00ff00; border-color: #00ff00; }
+.status-finalizado { color: #888; border-color: #888; }
+
+/* AJUSTES DE FLEXBOX */
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-column { display: flex; flex-direction: column; gap: 15px; }
+.text-center { text-align: center; }
+.w-100 { width: 100%; }
+
+/* ESTILOS ESPECÍFICOS DE TABELA */
+.table-custom { width: 100%; border-collapse: collapse; color: #fff; text-align: left; }
+.table-custom thead tr { border-bottom: 2px solid #d4af37; }
+.table-custom tbody tr { border-bottom: 1px solid #333; }
+.table-custom th, .table-custom td { padding: 12px; }
+
+/* ESPAÇAMENTOS UTILITÁRIOS ADICIONAIS */
+.mt-30 { margin-top: 30px; }
+.mt-50 { margin-top: 50px; }
+.overflow-auto { overflow-x: auto; }
+
+/* AJUSTES DA HOME */
+.icon-lg { font-size: 1.5rem; }
+.m-0 { margin: 0; }
+.mt-5 { margin-top: 5px; }
+.ml-auto { margin-left: auto; }
+.min-w-250 { min-width: 250px; }
+.font-bold { font-weight: bold; }
+.text-sm { font-size: 0.9rem; }
+
+/* DETALHES DO DASHBOARD */
+.card-header-line { border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
+.text-muted-sm { font-size: 0.9em; color: #ccc; margin-bottom: 15px; }
+.badge-gold { background: #d4af37; color: #000; padding: 5px 12px; border-radius: 20px; font-weight: bold; }
+.mt-20 { margin-top: 20px; }
+
+/* COMPONENTES DE PERFIL */
+.profile-header { text-align: center; margin-bottom: 20px; }
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.avatar-initial { font-size: 2rem; color: #d4af37; }
+.profile-name { color: #fff; margin-bottom: 5px; }
+.profile-date { color: #888; font-size: 0.9rem; }
+
+.profile-info-box {
+    margin-top: 30px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+}
+
+.label-sm { font-size: 0.75rem; text-transform: uppercase; display: block; }
+.mb-30 { margin-bottom: 30px; }
+
+/* ESTILOS DE PREÇO E MARGENS */
+.price-tag { color: #d4af37; font-size: 1.5rem; font-weight: bold; margin: 15px 0; }
+.mb-40 { margin-bottom: 40px; }
+.no-bg { background: transparent !important; border: none !important; box-shadow: none !important; }
+
+/* FEEDBACK VISUAL */
+.icon-success { font-size: 4rem; color: #00ff00; margin-bottom: 20px; }
+.text-lead { font-size: 1.1rem; margin-top: 20px; }
+.text-muted { color: #888; }
+
+/* 7. FOOTER */
+.main-footer {
+    text-align: center;
+    padding: 30px 0;
+    color: #666;
+    border-top: 1px solid #333;
+    margin-top: auto;
 }

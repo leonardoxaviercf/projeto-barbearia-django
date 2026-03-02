@@ -1,0 +1,73 @@
+{% extends 'barbearia/base.html' %}
+{% block title %}Agenda Geral - Barbearia Xavier{% endblock %}
+
+{% block content %}
+<div class="container-lg">
+    <h2 class="golden-text">Agenda da Barbearia</h2>
+    <p class="text-center">Visualização de todos os agendamentos ativos para hoje ({{ hoje|date:"d/m/Y" }}).</p>
+
+    <div class="card-custom mt-30 overflow-auto w-100">
+        <table class="table-custom">
+            <thead>
+                <tr>
+                    <th>Data/Hora</th>
+                    <th>Cliente</th>
+                    <th>Barbeiro</th>
+                    <th>Serviços</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agendamento in agendamentos %}
+                <tr>
+                    <td>{{ agendamento.data|date:"d/m H:i" }}</td>
+                    <td><strong>{{ agendamento.cliente.nome }}</strong></td>
+                    <td>{{ agendamento.barbeiro.nome }}</td>
+                    <td class="text-secondary" style="font-size: 0.85em;"> {% for item in agendamento.itens.all %}
+                            {{ item.servico.nome }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td class="golden-text">R$ {{ agendamento.total|default:"0.00" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum agendamento encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-custom mt-50">
+        <h3 class="golden-text">Serviços Mais Procurados</h3>
+        <canvas id="servicosChart" style="max-height: 300px;"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('servicosChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: 'Quantidade de Pedidos',
+                    data: {{ valores|safe }},
+                    backgroundColor: '#d4af37',
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, ticks: { color: '#fff' } },
+                    x: { ticks: { color: '#fff' } }
+                },
+                plugins: { 
+                    legend: { labels: { color: '#fff' } } 
+                }
+            }
+        });
+    </script>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'barbearia/base.html' %}
+
+{% block title %}Meu Perfil - Barbearia Xavier{% endblock %}
+
+{% block content %}
+<div class="auth-page-container">
+    <div class="login-form">
+        <h2 class="golden-text mb-30">Meu Perfil</h2>
+        
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <span class="avatar-initial">{{ user.first_name|first|upper }}</span>
+            </div>
+            <h3 class="profile-name">{{ user.get_full_name|default:user.username }}</h3>
+            <p class="profile-date">Cliente desde {{ user.date_joined|date:"M Y" }}</p>
+        </div>
+
+        <div class="profile-info-box">
+            <label class="golden-text label-sm">E-mail de Acesso</label>
+            <p class="w-100" style="color: #fff; margin-bottom: 25px;">{{ user.email }}</p>
+        </div>
+
+        <div class="flex-column mt-20">
+            <a href="{% url 'password_change' %}" class="btn-custom btn-primary w-100">Alterar Senha de Acesso</a>
+            <a href="{% url 'dashboard_cliente' %}" class="btn-custom btn-secondary w-100">Voltar para Minha Agenda</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

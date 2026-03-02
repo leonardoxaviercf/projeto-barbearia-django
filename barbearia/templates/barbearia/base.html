@@ -1,0 +1,85 @@
+{% load static %}
+{% load user_filters %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Barbearia Xavier{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'barbearia/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="nav-logo">Barbearia Xavier</a>
+            
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Início</a>
+                
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard_cliente' %}">Meus Agendamentos</a>
+                    
+                    {% if user.is_staff %}
+                        <a href="{% url 'agenda_geral' %}" class="golden-text" style="font-weight: bold;">
+                            📅 Agenda Geral
+                        </a>
+                    {% endif %}
+                    
+                    <a href="{% url 'perfil_usuario' %}" class="golden-text">
+                        Olá, {{ user.first_name|default:user.username }}!
+                    </a>
+                    
+                    <form action="{% url 'logout' %}" method="post" class="flex-between">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout-clean">Sair</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Entrar</a>
+                    <a href="{% url 'cadastro' %}" class="btn-custom btn-primary">Criar Conta</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div id="messages-container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert-gold message-item">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span>✅</span>
+                        <p class="m-0">{{ message }}</p>
+                    </div>
+                    <button type="button" class="btn-cancelar" onclick="closeMessage(this)" style="padding: 0 5px; border: none; background: none; cursor: pointer;">✕</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <main class="w-100">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 Barbearia Xavier - Desenvolvido por Leonardo Xavier</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.message-item');
+            messages.forEach(function(msg) {
+                // Define o tempo que ela fica visível (5 segundos)
+                setTimeout(function() {
+                    msg.style.opacity = '0';
+                    msg.style.maxHeight = '0';
+                    msg.style.margin = '0';
+                    msg.style.padding = '0';
+                    
+                    // Remove do DOM após a animação de subir
+                    setTimeout(() => msg.remove(), 500);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

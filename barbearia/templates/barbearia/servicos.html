@@ -1,0 +1,26 @@
+{% extends 'barbearia/base.html' %}
+{% load static %}
+
+{% block title %}Nossos Serviços - Barbearia Xavier{% endblock %}
+
+{% block content %}
+<div class="container-lg no-bg">
+    <h1 class="golden-text mb-40">Nossos Serviços</h1>
+
+    <div class="cards-grid">
+        {% for servico in servicos %}
+        <div class="card-agendamento text-center">
+            <h3 class="golden-text">{{ servico.nome }}</h3>
+            <p class="price-tag">
+                R$ {{ servico.preco_tabela }}
+            </p>
+            <a href="{% url 'criar_agendamento' %}" class="btn-custom btn-primary w-100">
+                Agendar Este
+            </a>
+        </div>
+        {% empty %}
+            <p class="text-center w-100">Nenhum serviço disponível no momento.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

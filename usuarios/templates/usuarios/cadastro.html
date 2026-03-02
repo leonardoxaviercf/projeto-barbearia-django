@@ -1,0 +1,41 @@
+{% extends 'barbearia/base.html' %}
+{% load static %}
+
+{% block title %}Criar Conta - Barbearia Xavier{% endblock %}
+
+{% block content %}
+<div class="auth-page-container"> 
+    <div class="login-form">
+        <h2 class="golden-text text-center mb-20">Junte-se a nós</h2>
+        <p class="text-center text-sm mb-25">Crie sua conta para agendar seu horário em segundos.</p>
+        
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group mb-15">
+                    <label class="label-sm golden-text">{{ field.label }}</label>
+                    {{ field }}
+                    
+                    {% if field.help_text %}
+                        <small class="text-muted label-sm">
+                            {{ field.help_text }}
+                        </small>
+                    {% endif %}
+                    
+                    {% for error in field.errors %}
+                        <p class="text-sm" style="color: #ff4d4d; margin-top: 5px;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn-custom btn-primary w-100 mt-15">
+                Finalizar Cadastro
+            </button>
+        </form>
+        
+        <p class="text-center mt-20 text-sm">
+            Já possui uma conta? <a href="{% url 'login' %}" class="golden-text">Faça login aqui</a>.
+        </p>
+    </div>
+</div>
+{% endblock %}

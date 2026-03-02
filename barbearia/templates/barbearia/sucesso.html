@@ -1,0 +1,24 @@
+{% extends 'barbearia/base.html' %}
+{% load user_filters %}
+{% load static %}
+
+{% block title %}Agendamento Confirmado - Barbearia Xavier{% endblock %}
+
+{% block content %}
+<div class="auth-page-container">
+    <div class="login-form text-center">
+        <div class="icon-success">✓</div>
+        <h2 class="golden-text">Agendamento Realizado!</h2>
+        
+        <p class="text-lead">
+            Tudo pronto, <strong>{{ user.first_name|first_name }}</strong>.
+        </p>
+        <p class="text-muted">Seu horário foi reservado com sucesso no nosso sistema.</p>
+        
+        <div class="flex-column mt-50">
+            <a href="{% url 'dashboard_cliente' %}" class="btn-custom btn-primary">Ver Meus Agendamentos</a>
+            <a href="{% url 'home' %}" class="btn-custom btn-secondary">Voltar para Início</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
